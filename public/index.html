@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <title>ììíì¤íì´ ê³ ê° ìë´</title>
+  <title>위시풀스테이 고객 안내</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html, body { height: 100%; overflow: hidden; }
@@ -20,7 +20,7 @@
       height: -webkit-fill-available;
     }
 
-    /* ââ ì± íë©´ ââ */
+    /* 챗 화면 */
     #chat-screen {
       display: flex;
       flex-direction: column;
@@ -34,7 +34,7 @@
       transform: translateX(-50%);
     }
 
-    /* í¤ë */
+    /* 헤더 */
     .chat-header {
       display: flex;
       align-items: center;
@@ -53,7 +53,7 @@
     .chat-header .info h2 { font-size: 15px; font-weight: 700; color: #1a1a1a; }
     .chat-header .info p  { font-size: 12px; color: #4a7c6b; }
 
-    /* ë©ìì§ ìì­ */
+    /* 메시지 영역 */
     #messages {
       flex: 1;
       overflow-y: auto;
@@ -85,7 +85,7 @@
       margin-top: 2px;
     }
 
-    /* íì´í ì¸ëì¼ì´í° */
+    /* 타이핑 인디케이터 */
     .typing-dots span {
       display: inline-block;
       width: 6px; height: 6px;
@@ -101,7 +101,7 @@
       30% { transform: translateY(-6px); }
     }
 
-    /* ìë ¥ ìì­ */
+    /* 입력 영역 */
     .chat-input-area {
       padding: 10px 12px;
       padding-bottom: max(10px, env(safe-area-inset-bottom));
@@ -152,32 +152,31 @@
 </head>
 <body>
 
-  <!-- ââ ì± íë©´ ââ -->
   <div id="chat-screen">
     <div class="chat-header">
-      <div class="avatar">ð¨</div>
+      <div class="avatar">🏨</div>
       <div class="info">
-        <h2>ììíì¤íì´ ê³ ê° ìë´</h2>
-        <p>â ì´ì ì¤ (09:00 ~ 21:00)</p>
+        <h2>위시풀스테이 고객 안내</h2>
+        <p>● 운영 중 (09:00 ~ 21:00)</p>
       </div>
     </div>
 
     <div id="messages">
       <div class="msg bot">
-        <div class="bot-icon">ð¨</div>
-        <div class="bubble">ìëíì¸ì! ììíì¤íì´ìëë¤ ð<br>ìì½, ì´ì© ìë´, ì·¨ìÂ·íë¶ ë± ê¶ê¸íì  ì ì í¸íê² ì§ë¬¸í´ì£¼ì¸ì.</div>
+        <div class="bot-icon">🏨</div>
+        <div class="bubble">안녕하세요! 위시풀스테이입니다 😊<br>예약, 이용 안내, 취소·환불 등 궁금하신 점을 편하게 질문해주세요.</div>
       </div>
     </div>
 
     <div class="chat-input-area">
       <textarea
         id="user-input"
-        placeholder="ì§ë¬¸ì ìë ¥íì¸ì..."
+        placeholder="질문을 입력하세요..."
         rows="1"
         onkeydown="handleKey(event)"
         oninput="autoResize(this)"
       ></textarea>
-      <button id="send-btn" onclick="sendMessage()">â¤</button>
+      <button id="send-btn" onclick="sendMessage()">➤</button>
     </div>
   </div>
 
@@ -207,7 +206,7 @@
 
         if (!res.ok) {
           const err = await res.json();
-          addMessage('bot', `â ï¸ ${err.error || 'ì¤ë¥ê° ë°ìíìµëë¤.'}`);
+          addMessage('bot', '⚠️ ' + (err.error || '오류가 발생했습니다.'));
         } else {
           const data = await res.json();
           addMessage('bot', data.reply);
@@ -217,7 +216,7 @@
         }
       } catch (e) {
         typingEl.remove();
-        addMessage('bot', 'â ï¸ ìë²ì ì°ê²°í  ì ììµëë¤. ì ì í ë¤ì ìëí´ì£¼ì¸ì.');
+        addMessage('bot', '⚠️ 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
       }
 
       document.getElementById('send-btn').disabled = false;
@@ -227,11 +226,11 @@
     function addMessage(role, text) {
       const messagesEl = document.getElementById('messages');
       const div = document.createElement('div');
-      div.className = `msg ${role}`;
+      div.className = 'msg ' + role;
       if (role === 'bot') {
-        div.innerHTML = `<div class="bot-icon">ð¨</div><div class="bubble">${escapeHtml(text)}</div>`;
+        div.innerHTML = '<div class="bot-icon">🏨</div><div class="bubble">' + escapeHtml(text) + '</div>';
       } else {
-        div.innerHTML = `<div class="bubble">${escapeHtml(text)}</div>`;
+        div.innerHTML = '<div class="bubble">' + escapeHtml(text) + '</div>';
       }
       messagesEl.appendChild(div);
       messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -242,7 +241,7 @@
       const messagesEl = document.getElementById('messages');
       const div = document.createElement('div');
       div.className = 'msg bot';
-      div.innerHTML = `<div class="bot-icon">ð¨</div><div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+      div.innerHTML = '<div class="bot-icon">🏨</div><div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
       messagesEl.appendChild(div);
       messagesEl.scrollTop = messagesEl.scrollHeight;
       return div;
